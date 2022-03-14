@@ -1,0 +1,40 @@
+﻿@model QuizProject.ViewModel.TestResultViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Available Quiz</h2>
+<div>
+
+    <a asp-action="TakeQuiz" asp-controller="Quiz" asp-route-id="1">States and Capitals</a> 
+
+    <br />
+    <hr />
+    <hr />
+</div>
+
+@{
+
+    if (Model != null)
+    {
+
+    <div>
+        <h3>States and Capitals last result</h3>
+
+        <strong>Total Questions: </strong>@Model.TotalQuestions<br />
+        <strong>Number correct: </strong>@Model.NumberCorrect<br />
+        <strong>Result:</strong> @Model.NumberCorrect/@Model.TotalQuestions - @( (Model.NumberCorrect * 100) / Model.TotalQuestions )%<br />
+        <strong>Date: </strong>@Model.TestDate<br />
+
+        <a asp-action="TakeQuiz" asp-controller="Quiz" asp-route-id="1">Retake Quiz "States and Capitals"</a> 
+    </div>
+    }
+    else
+    {
+        <div>You Have not taken any Quiz</div>
+    }
+
+
+}

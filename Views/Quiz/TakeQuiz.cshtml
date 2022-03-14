@@ -1,0 +1,64 @@
+﻿@model QuizProject.ViewModel.QuestionAnswerQuizViewModel
+
+@{
+    ViewBag.Title = "TakeQuiz";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Name</h2>
+
+
+<form asp-action="QuizResult" asp-controller="Quiz">
+    @Html.AntiForgeryToken()
+
+    <input asp-for="Name" type="hidden" />
+    <input asp-for="AnswerDescription" type="hidden" />
+    <input asp-for="QuestionDescription" type="hidden" />
+
+    <input asp-for="Name" type="hidden" />
+
+
+
+    <table class="table">
+        <tr>
+            <th></th>
+            <th>
+                @Model.QuestionDescription
+            </th>
+            <th>
+                @Model.AnswerDescription
+            </th>
+        </tr>
+
+        @for (int i = 0; i < Model.QuestionsListViewModel.Count; i++)
+        {
+            @Html.HiddenFor(model => model.QuestionsListViewModel[i].CorrectAnswer)
+            @Html.HiddenFor(model => model.QuestionsListViewModel[i].Id)
+            @Html.HiddenFor(model => model.QuestionsListViewModel[i].IsCorrect)
+            @Html.HiddenFor(model => model.QuestionsListViewModel[i].Question)
+
+
+            <tr>
+                <td>@(i+1)</td>
+                <td>
+                    @Model.QuestionsListViewModel[i].Question
+
+                </td>
+                <td>
+                    <input asp-for="QuestionsListViewModel[i].ProvidedAnswer" class="form-control" required />
+                    <span asp-validation-for="QuestionsListViewModel[i].ProvidedAnswer" class="text-danger"></span>
+                </td>
+
+            </tr>
+        }
+
+    </table>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Finish" class="btn btn-primary" />
+        </div>
+    </div>
+
+</form>
+

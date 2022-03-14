@@ -1,0 +1,90 @@
+﻿@model QuizProject.ViewModel.QuestionAnswerQuizViewModel
+
+@{
+    ViewBag.Title = "QuizResult";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>QuizResult</h2>
+
+
+
+@using (Html.BeginForm("QuizResult", "Quiz"))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Name)
+    @Html.HiddenFor(model => model.AnswerDescription)
+    @Html.HiddenFor(model => model.QuestionDescription)
+
+
+
+    <table class="table">
+        <tr>
+            <th>
+
+            </th>
+            <th>
+                @Model.QuestionDescription
+            </th>
+            <th>
+                Provided answer
+            </th>
+            <th>
+                Correct answer
+            </th>
+        </tr>
+
+        @for (int i = 0; i < Model.QuestionsListViewModel.Count; i++)
+        {
+            @Html.HiddenFor(model => model.QuestionsListViewModel[i].CorrectAnswer)
+            @Html.HiddenFor(model => model.QuestionsListViewModel[i].Id)
+            @Html.HiddenFor(model => model.QuestionsListViewModel[i].IsCorrect)
+            @Html.HiddenFor(model => model.QuestionsListViewModel[i].Question)
+
+
+            if (Model.QuestionsListViewModel[i].IsCorrect)
+            {
+                <tr class="alert alert-success">
+                    <td>
+                        @(i + 1)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.QuestionsListViewModel[i].Question)
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.QuestionsListViewModel[i].ProvidedAnswer)
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.QuestionsListViewModel[i].CorrectAnswer)
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr class="alert alert-danger">
+                    <td>
+                        @(i + 1)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.QuestionsListViewModel[i].Question)
+
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.QuestionsListViewModel[i].ProvidedAnswer)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => Model.QuestionsListViewModel[i].CorrectAnswer)
+                    </td>
+                </tr>
+            }
+        }
+
+    </table>
+    <div>
+        <strong>Result:</strong> @Model.NumberCorrect/@Model.QuestionsListViewModel.Count - @( (Model.NumberCorrect * 100) / Model.QuestionsListViewModel.Count )%
+        <div></div>
+    </div>
+    @Html.ActionLink("Close", "Index", "Profile", routeValues: null, htmlAttributes: new { @class = "btn btn-info btn-md", type = "button", style = "white-space: normal" })
+}
